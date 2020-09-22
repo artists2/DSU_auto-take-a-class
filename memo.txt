@@ -1,0 +1,20 @@
+//*[@id="xn-subsection-learn"]/div[2]/div[1]/div
+//*[@id="xn-subsection-learn"]/div[2]/div[2]/div
+
+
+
+#xn-subsection-learn > div.xnsl-components-container > div:nth-child(1)
+#xn-subsection-learn > div.xnsl-components-container > div:nth-child(2)
+#xn-subsection-learn > div.xnsl-components-container
+#xn-subsection-learn
+#xn-section-anchor-240765 > div.xns-subsection-container.false
+
+
+
+//*[@id="xn-subsection-learn"]/div[2]/div[1]
+#xn-subsection-learn > div.xnsl-components-container > div:nth-child(1)
+#xn-subsection-learn > div.xnsl-components-container > div:nth-child(2)
+/html/body/div/div/div/div[2]/div[1]/div[2]/div[1]/div[2]/div/div
+
+
+
