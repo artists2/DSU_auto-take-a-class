@@ -33,6 +33,11 @@ soup = BeautifulSoup(html, 'html.parser')
 TD = date.today()
 #print('Today : ' + TD.year + '년' + TD.month + '월' + TD.day + '일')
 
+def playVideo():
+    pass
+
+
+
 
 
 
@@ -54,7 +59,7 @@ while(1):
 
     elif Select_Num == 1: # 강의 목록 출력
         notices = soup.select('div div div div div a div h2')
-        print(notices)
+        #4print(notices)
         for lst in notices:
             print(lst.string)
 
@@ -64,23 +69,26 @@ while(1):
             Clist = driver.find_elements_by_class_name('ic-DashboardCard') #ic-DashboardCard
             Clist[count].click()
             try:
-                driver.find_element_by_class_name('context_external_tool_3').click() # 수업콘텐츠 입장
+                driver.find_element_by_class_name('context_external_tool_8').click() # 수업콘텐츠 입장
             except:
                 print('강의가 없는 수업입니다.' + driver.find_element_by_class_name('ellipsible').text) # 수정해야함!!!!!!!!!!!!!!!!!
             try:
                 driver.find_element_by_class_name('xncl-btn-unfold-sections xn-common-white-btn').driver.find_element_by_class_name('xn-common-btn-unfold-icon').click()  #펼치기
             except:
                 print('이미 펼쳐져 있습니다.')
-            try:
-                driver.switch_to_frame('tool_content') #tool_content
-            except:
-                pass
-            CL_avi = driver.find_elements_by_css_selector('div.xn-component-item-container.learn.open.attendance')
-            print(CL_avi)
-            #CL_avi[0].click()
+            
+            '''iframe = driver.find_elements_by_tag_name('iframe')
+            print('현재 페이지에 iframe은',len(iframe) ,'개가 있습니다.')
+            driver.switch_to_frame(iframe[-1]) #tool_content'''
+            
+            driver.switch_to_frame('tool_content')
+            complete = driver.find_element_by_xpath('//*[@id="xn-learn-status"]/div/div/div[1]/div[2]/span[3]')
+            incomplete = driver.find_element_by_xpath('//*[@id="xn-learn-status"]/div/div/div[1]/div[2]/span[6]')
+            print('complete : ' + complete.text)
+            print('incomplete : ' + incomplete.text)
+            
+    
             driver.switch_to.default_content()
-
-            #print(CL_avi) # test
             driver.find_element_by_class_name('ic-icon-svg--dashboard').click() # 돌아가기
             
             
@@ -99,5 +107,19 @@ search = driver.find_element_by_name('q')
 search.send_keys('Test')
 search.submit()
 time.sleep(2)
+
+
+
+
+
+            iframe = driver.find_elements_by_tag_name('iframe')
+            print('현재 페이지에 iframe은',len(iframe) ,'개가 있습니다.')
+            driver.switch_to_frame(iframe[-1]) #tool_content
+
+            CL_avi = driver.find_elements_by_class_name('xnslh-section-title')
+            print(CL_avi)
+            driver.switch_to.default_content()
+
+            #print(CL_avi) # test
 """
 #driver.quit()
