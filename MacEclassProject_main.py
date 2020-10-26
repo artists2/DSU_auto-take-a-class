@@ -7,7 +7,7 @@ from datetime import date
 user_ID = 20161591 #input("Your ID : ")
 user_PW = 1093415#input("Your PW : ")
 
-driver = webdriver.Chrome(r"C:\Users\r00t0k\Documents\r00t0k\project\chromedriver\chromedriver.exe")
+driver = webdriver.Chrome(r"/Users/r00t0k/CD/chromedriver")
 
 
 driver.get('https://eclass1.dongseo.ac.kr/')
@@ -69,31 +69,23 @@ while(1):
             Clist = driver.find_elements_by_class_name('ic-DashboardCard') #ic-DashboardCard
             Clist[count].click()
             try:
-                driver.find_element_by_class_name('context_external_tool_8').click() # 수업콘텐츠 입장
+                driver.find_element_by_class_name('context_external_tool_3').click()
+                try:
+                    #iframe switch
+                    driver.switch_to.frame("tool_content")
+
+                    driver.find_element_by_class_name('xn-common-btn-unfold-icon').click()
+                    print("강의를 펼쳤습니다.")
+
+                    #iframe Endswitch
+                    driver.switch_to.default_content()
+                except:
+                    print("강의가 이미 펼쳐져 있습니다.")
             except:
-                print('강의가 없는 수업입니다.' + driver.find_element_by_class_name('ellipsible').text) # 수정해야함!!!!!!!!!!!!!!!!!
-            try:
-                driver.find_element_by_class_name('xncl-btn-unfold-sections xn-common-white-btn').driver.find_element_by_class_name('xn-common-btn-unfold-icon').click()  #펼치기
-            except:
-                print('이미 펼쳐져 있습니다.')
-
-            '''iframe = driver.find_elements_by_tag_name('iframe')
-            print('현재 페이지에 iframe은',len(iframe) ,'개가 있습니다.')
-            driver.switch_to_frame(iframe[-1]) #tool_content'''
-
-            driver.switch_to_frame('tool_content')
-            complete = driver.find_element_by_xpath('//*[@id="xn-learn-status"]/div/div/div[1]/div[2]/span[3]')
-            incomplete = driver.find_element_by_xpath('//*[@id="xn-learn-status"]/div/div/div[1]/div[2]/span[6]')
-            print('complete : ' + complete.text)
-            print('incomplete : ' + incomplete.text)
+                print(driver.find_element_by_class_name('ellipsible').text + ' 수업은 수업 콘텐츠가 없습니다.')
+            driver.find_element_by_class_name('menu-item-icon-container').click() # 돌아가기(공통된 대쉬보드 값 찾기)
 
 
-            driver.switch_to.default_content()
-            driver.find_element_by_class_name('ic-icon-svg--dashboard').click() # 돌아가기
-
-
-
-        pass
     elif Select_Num == 3:
         pass
     else:
