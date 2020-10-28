@@ -1,7 +1,7 @@
 import time
 from selenium import webdriver
 from bs4 import BeautifulSoup
-from datetime import date
+from datetime import datetime
 
 
 user_ID = 20161591 #input("Your ID : ")
@@ -30,8 +30,6 @@ html = driver.page_source
 soup = BeautifulSoup(html, 'html.parser')
 
 
-TD = date.today()
-#print('Today : ' + TD.year + '년' + TD.month + '월' + TD.day + '일')
 
 
 def switchIframe():
@@ -44,14 +42,15 @@ def EndswitchIframe():
 
 
 def PlayVideo():
-    switchIframe()
-    a = len(driver.find_elements_by_class_name("xnvc-video-frame"))
-    print("페이지의 동영상 개수:  ",a)
-    EndswitchIframe()
-    pass
+    print(driver)
+    VideoBody = driver.find_elements_by_class_name("xnbc-body")
+
+    print("페이지의 동영상 개수:  " + str(len(VideoBody)))
+    return
 
 
 while(1):
+    print(datetime.today())
     print('------동작 목록------')
 
     print('1. 수업 목록 보기')
@@ -68,7 +67,6 @@ while(1):
 
     elif Select_Num == 1: # 강의 목록 출력
         notices = soup.select('div div div div div a div h2')
-        #4print(notices)
         for lst in notices:
             print(lst.string)
         print("\n\n")
@@ -90,36 +88,28 @@ while(1):
                     print("강의가 이미 펼쳐져 있습니다.")
 
                 # 행동 입력
-                EndswitchIframe()
-                switchIframe()
+               # EndswitchIframe()
+               # switchIframe()
                 time.sleep(1.5)
 
-
-
-                ClassNotTakenA = (driver.find_elements_by_css_selector("div.xnci-description-component-type-icon.learn.unpublished.start.movie")) # 법정교육 같은 수업들 카운트
-                ClassNotTakenB = (driver.find_elements_by_css_selector("div.xnci-description-component-type-icon.learn.unpublished.start.everlec")) # 법정교육말고 다른 수업들 카운트
-                print("들을수 있는 수업이 ", (len(ClassNotTakenA + ClassNotTakenB)), "개 있습니다.\n")
-
-
-                ClassNotTakenNameList = ClassNotTakenA + ClassNotTakenB
-                '''
-                for ClassNotTake in ClassNotTakenNameList:
+                ClassNotTakenList = driver.find_elements_by_css_selector("span.xnci-attendance-status.none")
+                print("미수강 수업의 개수 : " + str(len(ClassNotTakenList)))
+                for ClassNotTake in ClassNotTakenList:
                     ClassNotTake.click()
+                    time.sleep(2)
                     #############위는 정상코드:
-                    PlayVideo()'''
-                '''
-                for i in classNameList:
-                    print(i.text)
-                    i.click()
-                classNameList = []
-                #print(classNameList)
-                '''
-                #print(element_count)
-                #print("video count: " + len(element_count))
-
+                    PlayVideo()
+                    print("TEEEEEEEEEEEEEEEEEEEEEEEEEEST")
+                    driver.back()
+                    time.sleep(5)
+                    switchIframe()
+                    driver.find_element_by_class_name('xn-common-btn-unfold-icon').click()
+                    print("강의를 펼쳤습니다.")
+                    time.sleep(3)
+                    continue
 
                 EndswitchIframe()
-                driver.back()
+                #driver.back()
 
             except:
                 print(driver.find_elements_by_class_name('ellipsible')[1].text + ' 수업은 수업 콘텐츠가 없습니다.\n')
@@ -151,25 +141,4 @@ while(1):
 
 
 
-
-"""1
-search = driver.find_element_by_name('q')
-search.send_keys('Test')
-search.submit()
-time.sleep(2)
-
-
-
-
-
-            iframe = driver.find_elements_by_tag_name('iframe')
-            print('현재 페이지에 iframe은',len(iframe) ,'개가 있습니다.')
-            driver.switch_to_frame(iframe[-1]) #tool_content
-
-            CL_avi = driver.find_elements_by_class_name('xnslh-section-title')
-            print(CL_avi)
-            driver.switch_to.default_content()
-
-            #print(CL_avi) # test
-"""
 #driver.quit()
