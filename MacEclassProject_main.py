@@ -33,8 +33,6 @@ soup = BeautifulSoup(html, 'html.parser')
 TD = date.today()
 #print('Today : ' + TD.year + '년' + TD.month + '월' + TD.day + '일')
 
-def playVideo():
-    pass
 
 def switchIframe():
     driver.switch_to.frame("tool_content")
@@ -44,6 +42,15 @@ def EndswitchIframe():
     driver.switch_to.default_content()
     return
 
+
+def PlayVideo():
+    switchIframe()
+    a = len(driver.find_elements_by_class_name("xnvc-video-frame"))
+    print("페이지의 동영상 개수:  ",a)
+    EndswitchIframe()
+    pass
+
+
 while(1):
     print('------동작 목록------')
 
@@ -52,7 +59,6 @@ while(1):
     print('3. 해야할 과제 출력\n\n')
 
     Select_Num = int(input("동작을 선택하세요(-1 입력시 종료) : "))
-    print(Select_Num)
 
     if Select_Num == -1:
         print('3초 후 종료합니다.')
@@ -65,6 +71,7 @@ while(1):
         #4print(notices)
         for lst in notices:
             print(lst.string)
+        print("\n\n")
 
     elif Select_Num == 2: #밀린 동영상 강의 자동 시청
         Clist_Num = len(driver.find_elements_by_class_name('ic-DashboardCard')) # 과목 개수
@@ -95,9 +102,11 @@ while(1):
 
 
                 ClassNotTakenNameList = ClassNotTakenA + ClassNotTakenB
-
+                '''
                 for ClassNotTake in ClassNotTakenNameList:
                     ClassNotTake.click()
+                    #############위는 정상코드:
+                    PlayVideo()'''
                 '''
                 for i in classNameList:
                     print(i.text)
@@ -113,12 +122,29 @@ while(1):
                 driver.back()
 
             except:
-                print(driver.find_elements_by_class_name('ellipsible')[1].text + ' 수업은 수업 콘텐츠가 없습니다.')
+                print(driver.find_elements_by_class_name('ellipsible')[1].text + ' 수업은 수업 콘텐츠가 없습니다.\n')
             driver.back()
             #driver.find_element_by_id('global_nav_dashboard_link').click() # 돌아가기(공통된 대쉬보드 값 찾기)
 
 
     elif Select_Num == 3:
+        print("\n곧 마감 되는 수업이나 과제를 알려드립니다.")
+
+        driver.find_element_by_xpath("//*[@id='right-side']/div[2]/ul/li[18]/a").click()
+
+        EndClassName = driver.find_elements_by_xpath("//*[@id='right-side']/div[2]/ul/li[*]/a/div/b")
+        EndClassSubject = driver.find_elements_by_xpath("//*[@id='right-side']/div[2]/ul/li[*]/a/div/p[1]")
+        EndClassTime = driver.find_elements_by_xpath("//*[@id='right-side']/div[2]/ul/li[*]/a/div/p[2]")
+
+        time.sleep(2)
+
+        print("해야할 과제 수: " + str(len(EndClassName)) + "개\n")
+        for endclassNum in range(0, len(EndClassName)):
+            if EndClassTime[endclassNum].text[0] == 'C':
+                continue
+            print(EndClassSubject[endclassNum].text + "\n " + EndClassName[endclassNum].text + "\n 제출기간: " + EndClassTime[endclassNum].text  + " 까지 \n\n")
+            time.sleep(0.5)
+        print("\n\n")
         pass
     else:
         print('번호를 잘못 입력하였습니다. 다시 확인해 주세요.')
